@@ -1,0 +1,38 @@
+Potencia de Matrices
+1,0,1-0,1,0-1,0,1
+
+Suma de Matrices
+
+MATRIZ A
+2,0,1-3,0,0-5,1,1
+
+MATRIZ B
+1,0,1-1,2,1-1,1,0
+
+
+Multiplicación de Matrices
+
+MATRIZ A
+
+
+MATRIZ B
+1,0,1-1,2,1-1,1,0
+
+
+------------------------------------
+
+MATRIZ A
+1,2-3,4-5,6
+
+MATRIZ B
+1,2,3-3,4,5
+
+
+Conjuntos
+
+CONJUNTO A
+1-2-3-4-5-7-10-12
+
+CONJUNTO B
+
+6-7-8-9-10-24
