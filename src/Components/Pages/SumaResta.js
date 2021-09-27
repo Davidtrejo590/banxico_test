@@ -9,7 +9,7 @@ import FormMatriz from "../Forms/FormMatriz";
 
 const SumaResta = () => {
     return (
-        <div>
+        <div className="mt-2">
             <h4>Suma y Resta de Matrices</h4>
             <FormMatriz operacion="SumayResta"></FormMatriz>
         </div>
