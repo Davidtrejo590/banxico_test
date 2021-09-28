@@ -61,9 +61,9 @@ class Control {
         let matriz_res = [];
         let slice = [];
 
-        if (matriz_1.length === matriz_1[0].length && matriz_2.length === matriz_2[0].length) {
+        if (matriz_1.length === matriz_2.length && matriz_1[0].length === matriz_2[0].length) {
             for (let i = 0; i < matriz_1.length; i++) {
-                for (let j = 0; j < matriz_2.length; j++) {
+                for (let j = 0; j < matriz_1.length; j++) {
                     if (opcion) {
                         res.push(matriz_1[i][j] + matriz_2[i][j]);
                     } else {
@@ -79,7 +79,7 @@ class Control {
             return matriz_res;
 
         } else {
-            console.log('Matriz No Cuadrada');
+            console.log('Matriz No Adecuada');
             return matriz_1.length !== matriz_1[0].length ? matriz_1 : matriz_2;
         }
 

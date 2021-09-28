@@ -8,7 +8,7 @@ import FormPotencia from "../Forms/FormPotencia";
 */
 const Potencia = () => {
     return (
-        <div>
+        <div className="mt-2">
             <h4>Potencia de Matrices</h4>
             <FormPotencia></FormPotencia>
         </div>

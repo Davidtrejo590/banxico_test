@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Control from '../../Control';
+import FormMatriz from "./FormMatriz";
 
 /* 
     Componente FormPotencia
@@ -15,67 +16,52 @@ const FormPotencia = () => {
         matriz --> contiene el contenido de la matriz obtenido del formulario
         potencia --> contiene el valor de la potencia a elevar
     */
+    const [mat_a, setMat_a] = useState([]);
+    const [mat_b, setMat_b] = useState([]);
     const [validar, setValidar] = useState(false);
-    const [matriz, setMatriz] = useState([]);
-    const [potencia, setPotencia] = useState(0);
 
-    // Función para manejar el evento del botón 'Resolver'
-    const handleResolver = (e) => {
-        e.preventDefault();
-        let tam_a = document.getElementById("matriz").value;
-        setMatriz(tam_a.split('-').map(fila => fila.split(',').map(item => parseInt(item, 10))));
-        setPotencia(document.getElementById("potencia").value);
-        setValidar(true)
+    const get_data = (matriz_a, matriz_b) => {
+        // console.log('In parent Component', matriz_a, matriz_b)
+        setMat_a(matriz_a);
+        setMat_b(matriz_b);
+        setValidar(true);
     }
 
     return (
-        <div>
-            <form>
-                <div>
-                    <h2>Matriz</h2>
-                    <input
-                        className="w-50"
-                        type="text"
-                        id="matriz"
-                        placeholder="Ingresa los elementos del Conjunto de la forma '1,1,1 - 1,1,1'"
-                        autoComplete="off"
-                    />
-                </div>
-                <div>
-                    <h2>Potencia</h2>
-                    <input
-                        className="w-50"
-                        type="number"
-                        id="potencia"
-                        placeholder="Potencia a Elevar la Matriz"
-                    />
-                </div>
-                <br />
-                <div className="d-flex justify-content-evenly">
-                    <button className="btn btn-success" onClick={handleResolver}>Resolver</button>
-                </div>
-            </form>
-
-            <div>
-                {
-                    /* valida el estado de 'validar' para efectuar la acción correspondiente */
-                    validar ?
-                        <div className="d-flex flex-column align-items-center mt-3">
-                            <p>Potencia</p>
+        <div className="mt-2">
+            <input id="pot" type="number" placeholder="Potencia a Elevar"></input>
+            <FormMatriz operacion="Potencia" get_data={get_data}></FormMatriz>
+            
+            {
+                validar ?
+                    <div className="d-flex text-center justify-content-evenly">
+                        <div>
+                            <p>{`A ^ ${document.getElementById("pot").value}`}</p>
                             {
-                                Control.potencia_matriz(matriz, potencia).map((item, index) => {
+                                Control.potencia_matriz(mat_a, document.getElementById("pot").value).map((item, index) => {
                                     return (
                                         <div className="mx-2" key={index}><p>{`${item}`}</p></div>
                                     )
                                 })
                             }
                         </div>
-                        :
-                        <div></div>
-                }
-            </div>
+                        <div>
+                            <p>{`B ^ ${document.getElementById("pot").value}`}</p>
+                            {
+                                Control.potencia_matriz(mat_b, document.getElementById("pot").value).map((item, index) => {
+                                    return (
+                                        <div className="mx-2" key={index}><p>{`${item}`}</p></div>
+                                    )
+                                })
+                            }
+                        </div>
+                    </div>
+                    :
+                    <div></div>
+            }
         </div>
     )
+
 }
 
 export default FormPotencia;
