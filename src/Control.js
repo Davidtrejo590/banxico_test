@@ -135,6 +135,50 @@ class Control {
     }
 
 
+    // DOM METHODS
+
+    /* 
+        Creación de una matriz de inputs de manera dinámica 
+        Recibe como parámetro el número de filas y columnas correspondientes
+        El parámetro container es un elemento donde se colocará la matriz a dibujar
+    */
+    static create_matriz = (filas, columnas, container) => {
+        for (let i = 0; i < filas; i++) {
+            let fila = document.createElement("div");
+            fila.setAttribute("id", `${container.id}-fil-${i}`);
+            fila.setAttribute("class", `${container.id}-fil-${i}`);
+            // console.log(fila);
+            for (let j = 0; j < columnas; j++) {
+                let columna = document.createElement("input");
+                columna.setAttribute("type", "number");
+                columna.setAttribute("id", `${container.id}-col-${i}${j}`);
+                // console.log(columna);
+                fila.appendChild(columna);
+                container.appendChild(fila);
+            }
+        }
+    }
+
+    /* Método para eliminar los campos, recarga la página actual */
+    static delete_values = () => {
+        window.location.reload(true);
+    }
+
+    /* 
+        Método para mostrar las dimensiones de las matrices y crearlas 
+        Recibe como parámetro los elementos filas_*, columnas_* el container_*
+    
+    */
+    static get_values_matriz(filas_a,columnas_a, filas_b, columnas_b ,container_a, container_b) {
+    document.getElementById("res_a").innerHTML = "Dimensiones de A: " + parseInt(filas_a.value) + "x" + parseInt(columnas_a.value);
+    document.getElementById("res_b").innerHTML = "Dimensiones de B: " + parseInt(filas_b.value) + "x" + parseInt(columnas_b.value);
+
+    /* Hace el llamado a la función para crear y dibujar la matriz en el lugar y con los valores correspondientes */
+    Control.create_matriz(parseInt(filas_a.value), parseInt(columnas_a.value), container_a);
+    Control.create_matriz(parseInt(filas_b.value), parseInt(columnas_b.value), container_b);
+}
+
+
 
 }
 

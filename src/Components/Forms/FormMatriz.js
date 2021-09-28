@@ -12,9 +12,7 @@ const FormMatriz = (props) => {
 
     /* 
         Estados necesarios
-        validar --> determina si los campos han sido llenados para mostrar el resultado de la operación
         operación --> toma el valor de operacion que se recibe mediante props
-        mat_a y mat_b son el contenido de la Matriz A y B respectivamente.
     */
 
     const [operacion, setOperacion] = useState('');

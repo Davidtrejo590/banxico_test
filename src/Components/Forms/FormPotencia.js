@@ -13,13 +13,15 @@ const FormPotencia = () => {
     /* 
         Estados necesarios
         validar --> determina si los campos han sido llenados para mostrar el resultado de la operación
-        matriz --> contiene el contenido de la matriz obtenido del formulario
-        potencia --> contiene el valor de la potencia a elevar
+        mat_a --> Obtiene los valores de la matriz a que provienen del componente hijo
+        mat_b --> Obtiene los valores de la matriz b que provienen del componente hijo
     */
     const [mat_a, setMat_a] = useState([]);
     const [mat_b, setMat_b] = useState([]);
     const [validar, setValidar] = useState(false);
 
+
+    /* Método para obtener los valores de las matrices que provienen del componente hijo */
     const get_data = (matriz_a, matriz_b) => {
         // console.log('In parent Component', matriz_a, matriz_b)
         setMat_a(matriz_a);
@@ -31,10 +33,10 @@ const FormPotencia = () => {
         <div className="mt-2">
             <input id="pot" type="number" placeholder="Potencia a Elevar"></input>
             <FormMatriz operacion="Potencia" get_data={get_data}></FormMatriz>
-            
+
             {
                 validar ?
-                    <div className="d-flex text-center justify-content-evenly">
+                    <div className="mt-3 d-flex text-center justify-content-evenly">
                         <div>
                             <p>{`A ^ ${document.getElementById("pot").value}`}</p>
                             {

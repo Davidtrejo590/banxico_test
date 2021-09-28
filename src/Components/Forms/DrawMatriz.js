@@ -1,10 +1,23 @@
 import React from "react";
+import Control from "../../Control";
 
-const DrawMatriz = (props) => {
+/* 
+    Componente para dibujar una matriz de acuerdo a las dimensiones obtenidas 
+    Recibe 'operacion' (String) como props para hacer las validaciones correspondientes
 
+*/
+
+const DrawMatriz = ( props ) => {
+
+    /* Elementos HTML necesarios  */
+    /* matriz_container_a y b son los lugares donde se dibujarán las matrices de inputs */
     const matriz_container_a = document.getElementById("matriz_a");
     const matriz_container_b = document.getElementById("matriz_b");
 
+    /* 
+        Los elementos filas_* y columnas_* contienen número de filas y columnas correspondientes 
+        de cada matriz (Son las dimensiones de cada una).
+    */
     const filas_a = document.getElementById("filas_a");
     const columnas_a = document.getElementById("columnas_a");
 
@@ -12,35 +25,42 @@ const DrawMatriz = (props) => {
     const columnas_b = document.getElementById("columnas_b");
 
 
-
+    /* Método para la creación de la matriz de inputs */
     const send_values = () => {
 
+        /* Válida que las entradas tengan algún valor y sean numéricos */
         if (isNaN(parseInt(filas_a.value)) || isNaN(parseInt(columnas_a.value)) || isNaN(parseInt(filas_b.value)) || isNaN(parseInt(columnas_b.value))) {
-            alert("Entrada Inválida");
+            alert("Debes de Ingresar las Dimensiones de cada Matriz");
         }
 
         switch (props.operacion) {
+            /* Para una suma o resta válida que las dimensiones de cada una sean iguales */
             case 'SumayResta':
                 if ((parseInt(filas_a.value) === parseInt(filas_b.value)) && parseInt(columnas_a.value) === parseInt(columnas_b.value)) {
-                    get_values_matriz();
+                    Control.get_values_matriz(filas_a, columnas_a, filas_b, columnas_b, matriz_container_a, matriz_container_b);
                 } else {
-                    alert("Las dimensiones de las matrices no son iguales");
+                    alert("Las dimensiones de A deben ser iguales a las de B");
                 }
                 break;
 
+            /* Para una multiplicación valida que las columnas de A sean igual a filas de B */
             case 'MultiplicayDivide':
                 if (parseInt(columnas_a.value) !== parseInt(filas_b.value)) {
-                    alert("Las dimensiones de las matrices no son adecaudas");
+                    alert("Las Columnas de A no coinciden con las Filas de B / NxM - MxN");
                 } else {
-                    get_values_matriz();
+                    Control.get_values_matriz(filas_a, columnas_a, filas_b, columnas_b, matriz_container_a, matriz_container_b);
                 }
                 break;
 
+            /* Para la potencia de válida que las matrices sean cuadradas */
             case 'Potencia':
                 if ((parseInt(filas_a.value) !== parseInt(columnas_a.value)) || (parseInt(filas_b.value) !== parseInt(columnas_b.value))) {
                     alert("La matriz debe de ser cuadrada");
-                } else {
-                    get_values_matriz();
+                }else if((!document.getElementById("pot").value)){
+                    alert("El campo de potencia no es  válido");
+                }
+                 else {
+                    Control.get_values_matriz(filas_a, columnas_a, filas_b, columnas_b, matriz_container_a, matriz_container_b);
                 }
                 break;
 
@@ -50,23 +70,11 @@ const DrawMatriz = (props) => {
 
     }
 
-    const create_matriz = (filas, columnas, container) => {
-        for (let i = 0; i < filas; i++) {
-            let fila = document.createElement("div");
-            fila.setAttribute("id", `${container.id}-fil-${i}`);
-            fila.setAttribute("class", `${container.id}-fil-${i}`);
-            // console.log(fila);
-            for (let j = 0; j < columnas; j++) {
-                let columna = document.createElement("input");
-                columna.setAttribute("type", "number");
-                columna.setAttribute("id", `${container.id}-col-${i}${j}`);
-                // console.log(columna);
-                fila.appendChild(columna);
-                container.appendChild(fila);
-            }
-        }
-    }
-
+    /* 
+        Método para recuperar los valores de cada input de las matrices A y B 
+        Envía los valores hacía del componente padre correspondiente en forma de 
+        lista de listas.
+    */
     const check_values = () => {
 
         let matriz_a_values = [];
@@ -99,6 +107,7 @@ const DrawMatriz = (props) => {
             }
         }
 
+        /* Formatea los datos de String a int y los forma en lista de listas según las dimensiones */
         for (let i = 0; i < parseInt(filas_a.value); i++) {
             let arr = matriz_a_values.splice(0, parseInt(columnas_a.value));
             values_a.push(arr.map((item) => parseInt(item)));
@@ -109,24 +118,15 @@ const DrawMatriz = (props) => {
             values_b.push(arr.map((item) => parseInt(item)));
         }
 
+        /* Envía los valores hacía el componente padre */
         props.func_data(values_a, values_b);
     }
 
-    const delete_values = () => {
-        document.getElementById("mat_res").remove();
-        document.getElementById("container_res").remove();
-    }
 
-
-    function get_values_matriz() {
-        document.getElementById("res_a").innerHTML = "Dimensiones de A: " + parseInt(filas_a.value) + "x" + parseInt(columnas_a.value);
-        document.getElementById("res_b").innerHTML = "Dimensiones de B: " + parseInt(filas_b.value) + "x" + parseInt(columnas_b.value);
-
-        create_matriz(parseInt(filas_a.value), parseInt(columnas_a.value), matriz_container_a);
-        create_matriz(parseInt(filas_b.value), parseInt(columnas_b.value), matriz_container_b);
-    }
-
-
+    /* 
+        Formulario que se usa en cada situación SUMA, RESTA, MULTIPLICACIÓN, DIVISIÓN , POTENCIA 
+        Dibuja el resultado según la operación correspondiente
+    */
     return (
         <>
             <div className="d-flex justify-content-around mt-2">
@@ -161,6 +161,7 @@ const DrawMatriz = (props) => {
             <div className="mt-3">
                 <button className="btn btn-primary" type="button" onClick={send_values}>Dibujar Matriz</button>
 
+                {/* 'container_res aparce cuando se validan las entradas de las dimensiones y dibuja la matriz' */}
                 <div id="container_res" className="d-flex justify-content-around mt-3 mb-3">
                     <div>
                         <p id="res_a"></p>
@@ -174,7 +175,7 @@ const DrawMatriz = (props) => {
 
                 <div className="d-flex justify-content-evenly">
                     <button className="btn btn-success mt-2" type="button" onClick={check_values}>Resolver</button>
-                    <button className="btn btn-danger mt-2" type="button" onClick={delete_values}>Eliminar</button>
+                    <button className="btn btn-danger mt-2" type="button" onClick={Control.delete_values}>Eliminar</button>
                 </div>
 
             </div>
