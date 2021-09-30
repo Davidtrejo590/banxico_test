@@ -169,14 +169,47 @@ class Control {
         Recibe como parámetro los elementos filas_*, columnas_* el container_*
     
     */
-    static get_values_matriz(filas_a,columnas_a, filas_b, columnas_b ,container_a, container_b) {
-    document.getElementById("res_a").innerHTML = "Dimensiones de A: " + parseInt(filas_a.value) + "x" + parseInt(columnas_a.value);
-    document.getElementById("res_b").innerHTML = "Dimensiones de B: " + parseInt(filas_b.value) + "x" + parseInt(columnas_b.value);
+    static get_values_matriz(filas_a, columnas_a, filas_b, columnas_b, container_a, container_b) {
+        document.getElementById("res_a").innerHTML = "Dimensiones de A: " + parseInt(filas_a.value) + "x" + parseInt(columnas_a.value);
+        document.getElementById("res_b").innerHTML = "Dimensiones de B: " + parseInt(filas_b.value) + "x" + parseInt(columnas_b.value);
 
-    /* Hace el llamado a la función para crear y dibujar la matriz en el lugar y con los valores correspondientes */
-    Control.create_matriz(parseInt(filas_a.value), parseInt(columnas_a.value), container_a);
-    Control.create_matriz(parseInt(filas_b.value), parseInt(columnas_b.value), container_b);
-}
+        /* Hace el llamado a la función para crear y dibujar la matriz en el lugar y con los valores correspondientes */
+        Control.create_matriz(parseInt(filas_a.value), parseInt(columnas_a.value), container_a);
+        Control.create_matriz(parseInt(filas_b.value), parseInt(columnas_b.value), container_b);
+    }
+
+    /* Métodos para Conjuntos */
+
+    // Obtiene el valor de los inputs de la dimensión de los conjuntos y los válida
+    static data_conjuntos = () => {
+        const conjunto_a = parseInt(document.getElementById("conjunto_a").value);
+        const conjunto_b = parseInt(document.getElementById("conjunto_b").value);
+        const cont_con_a = document.getElementById("cont_con_a");
+        const cont_con_b = document.getElementById("cont_con_b");
+
+        if (isNaN(conjunto_a) || isNaN(conjunto_b)) {
+            alert('Entradas Inválidas');
+        } else {
+            // Dibujar conjuntos
+            document.getElementById("res_con_a").innerHTML = `Elementos de A - ${conjunto_a}`;
+            document.getElementById("res_con_b").innerHTML = `Elementos de B - ${conjunto_b}`;
+            Control.create_conjunto(conjunto_a, cont_con_a);
+            Control.create_conjunto(conjunto_b, cont_con_b);
+        }
+    }
+
+    /* 
+        Dibuja los inputs necesarios para cada conjunto
+        Recibe una lista de elementos y una container que es donde se colocará
+    */
+    static create_conjunto = (elementos, container) => {
+        for (let i = 0; i < elementos; i++) {
+            let elem = document.createElement("input");
+            elem.setAttribute("type", "number");
+            elem.setAttribute("id", `elem-${i}`);
+            container.appendChild(elem);
+        }
+    }
 
 
 

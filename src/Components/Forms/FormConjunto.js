@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Control from "../../Control";
 
 /*
@@ -6,110 +6,72 @@ import Control from "../../Control";
     Muetra un formuario para recibir dos conjuntos de datos.
 */
 
-const FormConjunto = () => {
+const FormConjunto = (props) => {
 
     /* 
-        Estados necesarios
-        validar --> determina si los campos han sido llenados para mostrar el resultado de la operación
-        con_a --> toma el valor del primer formulario
-        con_b --> toma el valor del segundo formulario
+        Método para extraer los valores de cada input
     */
-    const [validar, setValidar] = useState(false);
-    const [con_a, setCon_a] = useState([]);
-    const [con_b, setCon_b] = useState([]);
+    const get_values_conj = () => {
+        let cont_a = document.querySelectorAll("div.cont_con_a");
+        let cont_b = document.querySelectorAll("div.cont_con_b");
+        let conj_a_values = [];
+        let conj_b_values = [];
 
-    // Función para manejar el evento del botón 'Resolver'
-    const handleResolver = (e) => {
-        e.preventDefault();
-        // Obtiene el contenido de cada formulario
-        let tam_a = document.getElementById("conjunto_a").value;
-        let tam_b = document.getElementById("conjunto_b").value;
-        // Transforma el contenido de los formularios ( De String a Array ) y los asiga a su estado correspondiente
-        setCon_a(tam_a.split('-').map(item => parseInt(item, 10)));
-        setCon_b(tam_b.split('-').map(item => parseInt(item, 10)));
-        setValidar(true);
+        /* Obtiene valores de A */
+        let con_a = cont_a[0].childNodes;
+        for (let i = 0; i < con_a.length; i++) {
+            conj_a_values.push(parseInt(con_a[i].value));
+        }
+
+        /* Obtiene valores de B */
+        let con_b = cont_b[0].childNodes;
+        for (let i = 0; i < con_b.length; i++) {
+            conj_b_values.push(parseInt(con_b[i].value));
+        }
+
+        /* Envía los valores de los conjuntos al componente Padre */
+        props.get_data(conj_a_values, conj_b_values);
     }
 
 
     return (
-        <div>
-            <form>
+        <>
+            {/* Formularios para elementos de cada Conjunto */}
+            <div className="d-flex justify-content-evenly mb-3">
                 <div>
-                    <h2>Elementos del Conjunto A</h2>
-                    <input
-                        className="w-50"
-                        type="text"
-                        id="conjunto_a"
-                        placeholder="Ingresa los elementos del Conjunto de la forma '1-1-1-1-1'"
-                        autoComplete="off"
-                    />
+                    <h4>Número de Elementos del Conjunto A</h4>
+                    <input id="conjunto_a" type="text" />
                 </div>
+
                 <div>
-                    <h2>Elementos del Conjunto B</h2>
-                    <input
-                        className="w-50"
-                        type="text"
-                        id="conjunto_b"
-                        placeholder="Ingresa los elementos del Conjunto de la forma '1-1-1-1-1'"
-                        autoComplete="off"
-                    />
+                    <h4>Número de Elementos del Conjunto B</h4>
+                    <input id="conjunto_b" type="text" />
                 </div>
-                <br />
-                <button className="btn btn-success" onClick={handleResolver}>Resolver</button>
-            </form>
-
-            <div>
-                {
-                    /* valida el estado de 'validar' para mostar el resultado de cada una de la operaciones */
-                    validar ?
-                        <div>
-                            <div className="d-flex mt-3">
-                                <h6>Conjunto A</h6>
-                                {
-                                    con_a.map((item, index) => {
-                                        return <p className="mx-4" key={index}>{`${item}`}</p>
-                                    })
-                                }
-                            </div>
-                            <div className="d-flex">
-                                <h6>Conjunto B</h6>
-                                {
-                                    con_b.map((item, index) => {
-                                        return <p className="mx-4" key={index}>{item}</p>
-                                    })
-                                }
-                            </div>
-                            <div className="d-flex mt-2">
-                                <h6>Unión</h6>
-                                {
-                                    Control.union_conjunto(con_a, con_b).map((item, index) => {
-                                        return <p className="mx-4" key={index}>{item}</p>
-                                    })
-                                }
-                            </div>
-                            <div className="d-flex">
-                                <h6>Intersección</h6>
-                                {
-                                    Control.interseccion_conjunto(con_a, con_b).map((item, index) => {
-                                        return <p className="mx-5" key={index}>{item}</p>
-                                    })
-                                }
-                            </div>
-                            <div className="d-flex">
-                                <h6 className="mr-2">Diferencia</h6>
-                                {
-                                    Control.diferencia_conjunto(con_a, con_b).map((item, index) => {
-                                        return <p className="mx-5" key={index}>{item}</p>
-                                    })
-                                }
-                            </div>
-
-                        </div>
-                        :
-                        <div></div>
-                }
             </div>
-        </div>
+
+
+            <button className="btn btn-primary" type="button" onClick={Control.data_conjuntos}>Dibujar Conjuntos</button>
+
+            {/* Container para dibujar los inputs de cada conjunto */}
+            <div className="d-flex flex-column justify-content-around mt-3 mb-3">
+                <div>
+                    <p id="res_con_a"></p>
+                    <div id="cont_con_a" className="cont_con_a"></div>
+                </div>
+
+                <div>
+                    <p id="res_con_b"></p>
+                    <div id="cont_con_b" className="cont_con_b"></div>
+                </div>
+
+            </div>
+
+            <div className="d-flex justify-content-evenly">
+                <button className="btn btn-success" type="button" onClick={get_values_conj}>Resolver</button>
+                <button className="btn btn-danger" type="button" onClick={Control.delete_values}>Eliminar</button>
+            </div>
+
+        </>
     )
 }
 

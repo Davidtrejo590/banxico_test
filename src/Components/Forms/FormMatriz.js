@@ -14,7 +14,6 @@ const FormMatriz = (props) => {
         Estados necesarios
         operación --> toma el valor de operacion que se recibe mediante props
     */
-
     const [operacion, setOperacion] = useState('');
 
     // Coloca el contenido de props en el estado de operacion cuando carga el Componente

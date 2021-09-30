@@ -14,7 +14,6 @@ const Header = () => {
                     <div className="navbar-nav">
                         <Link className="nav-link active" to='/matriz'>Matrices</Link>
                         <Link className="nav-link active" to='/conjunto'>Conjuntos</Link>
-
                     </div>
                 </div>
             </div>

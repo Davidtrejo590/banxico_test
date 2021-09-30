@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Control from "../../Control";
 
 /* 
@@ -7,7 +7,12 @@ import Control from "../../Control";
 
 */
 
-const DrawMatriz = ( props ) => {
+const DrawMatriz = (props) => {
+
+    /* 
+        Estado para válidar que los inputs no estén vacíos
+    */
+    const [listo, setListo] = useState(false);
 
     /* Elementos HTML necesarios  */
     /* matriz_container_a y b son los lugares donde se dibujarán las matrices de inputs */
@@ -26,11 +31,13 @@ const DrawMatriz = ( props ) => {
 
 
     /* Método para la creación de la matriz de inputs */
-    const send_values = () => {
+    const dibujar_matriz = () => {
 
         /* Válida que las entradas tengan algún valor y sean numéricos */
         if (isNaN(parseInt(filas_a.value)) || isNaN(parseInt(columnas_a.value)) || isNaN(parseInt(filas_b.value)) || isNaN(parseInt(columnas_b.value))) {
             alert("Debes de Ingresar las Dimensiones de cada Matriz");
+        } else {
+            setListo(true);
         }
 
         switch (props.operacion) {
@@ -56,10 +63,10 @@ const DrawMatriz = ( props ) => {
             case 'Potencia':
                 if ((parseInt(filas_a.value) !== parseInt(columnas_a.value)) || (parseInt(filas_b.value) !== parseInt(columnas_b.value))) {
                     alert("La matriz debe de ser cuadrada");
-                }else if((!document.getElementById("pot").value)){
+                } else if ((!document.getElementById("pot").value)) {
                     alert("El campo de potencia no es  válido");
                 }
-                 else {
+                else {
                     Control.get_values_matriz(filas_a, columnas_a, filas_b, columnas_b, matriz_container_a, matriz_container_b);
                 }
                 break;
@@ -75,51 +82,65 @@ const DrawMatriz = ( props ) => {
         Envía los valores hacía del componente padre correspondiente en forma de 
         lista de listas.
     */
-    const check_values = () => {
+    const values_matriz = () => {
 
         let matriz_a_values = [];
         let matriz_b_values = [];
         let values_a = [];
         let values_b = [];
 
+        if (!listo) {
+            alert('No hay entradas');
+        } else {
+            // Contiene el valor de las columnas de la Matriz A
+            let container_a = document.querySelectorAll("div.matriz_a");
+            let matriz_a = container_a[0].childNodes;
+            for (let i = 0; i < matriz_a.length; i++) {
+                let filas = matriz_a[i].childNodes;
+                for (let j = 0; j < filas.length; j++) {
+                    let columna = filas[j].id;
+                    // console.log(`Matriz A - Indíce: ${i}${j}, Valor: ${document.getElementById(columna).value}`);
+                    if (document.getElementById(columna).value === '') {
+                        alert(` La celda ${i}${j} de A no tiene valor`);
+                    } else {
+                        matriz_a_values.push(document.getElementById(columna).value);
+                    }
 
-        // Contiene el valor de las columnas de la Matriz A
-        let container_a = document.querySelectorAll("div.matriz_a");
-        let matriz_a = container_a[0].childNodes;
-        for (let i = 0; i < matriz_a.length; i++) {
-            let filas = matriz_a[i].childNodes;
-            for (let j = 0; j < filas.length; j++) {
-                let columna = filas[j].id;
-                // console.log(`Matriz A - Indíce: ${i}${j}, Valor: ${document.getElementById(columna).value}`);
-                matriz_a_values.push(document.getElementById(columna).value);
+                }
             }
-        }
 
-        // Contiene el valor de las columnas de la Matriz B
-        let container_b = document.querySelectorAll("div.matriz_b");
-        let matriz_b = container_b[0].childNodes;
-        for (let i = 0; i < matriz_b.length; i++) {
-            let filas = matriz_b[i].childNodes;
-            for (let j = 0; j < filas.length; j++) {
-                let columna = filas[j].id;
-                // console.log(`Matriz B - Indíce: ${i}${j}, Valor: ${document.getElementById(columna).value}`);
-                matriz_b_values.push(document.getElementById(columna).value);
+            // Contiene el valor de las columnas de la Matriz B
+            let container_b = document.querySelectorAll("div.matriz_b");
+            let matriz_b = container_b[0].childNodes;
+            for (let i = 0; i < matriz_b.length; i++) {
+                let filas = matriz_b[i].childNodes;
+                for (let j = 0; j < filas.length; j++) {
+                    let columna = filas[j].id;
+                    // console.log(`Matriz B - Indíce: ${i}${j}, Valor: ${document.getElementById(columna).value}`);
+                    if (document.getElementById(columna).value === '') {
+                        alert(` La celda ${i}${j} de B no tiene valor`);
+                    } else {
+                        matriz_b_values.push(document.getElementById(columna).value);
+                    }
+
+                }
             }
+
+            /* Formatea los datos de String a int y los forma en lista de listas según las dimensiones */
+            for (let i = 0; i < parseInt(filas_a.value); i++) {
+                let arr = matriz_a_values.splice(0, parseInt(columnas_a.value));
+                values_a.push(arr.map((item) => parseInt(item)));
+            }
+
+            for (let i = 0; i < parseInt(filas_b.value); i++) {
+                let arr = matriz_b_values.splice(0, parseInt(columnas_b.value));
+                values_b.push(arr.map((item) => parseInt(item)));
+            }
+
+            /* Envía los valores hacía el componente padre */
+            props.func_data(values_a, values_b);
         }
 
-        /* Formatea los datos de String a int y los forma en lista de listas según las dimensiones */
-        for (let i = 0; i < parseInt(filas_a.value); i++) {
-            let arr = matriz_a_values.splice(0, parseInt(columnas_a.value));
-            values_a.push(arr.map((item) => parseInt(item)));
-        }
-
-        for (let i = 0; i < parseInt(filas_b.value); i++) {
-            let arr = matriz_b_values.splice(0, parseInt(columnas_b.value));
-            values_b.push(arr.map((item) => parseInt(item)));
-        }
-
-        /* Envía los valores hacía el componente padre */
-        props.func_data(values_a, values_b);
     }
 
 
@@ -134,7 +155,7 @@ const DrawMatriz = ( props ) => {
                     <h4>Dimensiones Matriz A</h4>
                     <div className="d-flex justify-content-end mt-3">
                         <p>Numero de filas: </p>
-                        <input type="text" id="filas_a" className="input_dim" />
+                        <input id="filas_a" className="input_dim" />
                     </div>
 
                     <div className="d-flex justify-content-end mt-3">
@@ -159,9 +180,12 @@ const DrawMatriz = ( props ) => {
             </div>
 
             <div className="mt-3">
-                <button className="btn btn-primary" type="button" onClick={send_values}>Dibujar Matriz</button>
+                <button className="btn btn-primary" type="button" onClick={dibujar_matriz}>Dibujar Matriz</button>
 
-                {/* 'container_res aparce cuando se validan las entradas de las dimensiones y dibuja la matriz' */}
+                {/* 
+                    container_res aparece cuando se validan las entradas de las dimensiones y dibuja la matriz 
+                    Aquí se dibujan las matrices de inputs
+                */}
                 <div id="container_res" className="d-flex justify-content-around mt-3 mb-3">
                     <div>
                         <p id="res_a"></p>
@@ -174,7 +198,7 @@ const DrawMatriz = ( props ) => {
                 </div>
 
                 <div className="d-flex justify-content-evenly">
-                    <button className="btn btn-success mt-2" type="button" onClick={check_values}>Resolver</button>
+                    <button className="btn btn-success mt-2" type="button" onClick={values_matriz}>Resolver</button>
                     <button className="btn btn-danger mt-2" type="button" onClick={Control.delete_values}>Eliminar</button>
                 </div>
 

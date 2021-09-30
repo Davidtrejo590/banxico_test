@@ -10,10 +10,10 @@ const Home = () => {
             <div className="d-flex flex-column mt-3">
                 <h4> Operaciones con Matrices</h4>
                 <h5> Las operaciones se efenctúan de la manera</h5>
-                <p> Suma: A + B</p>
-                <p> Resta: A - B</p>
+                <p> Suma: A + B y B + A</p>
+                <p> Resta: A - B y B - A</p>
                 <p> Multiplicación: A * B</p>
-                <p> Potencia A<sup>n</sup></p>
+                <p> Potencia A<sup>n</sup> y Potencia B<sup>n</sup> </p>
             </div>
 
             <div className="d-flex flex-column">
@@ -21,7 +21,7 @@ const Home = () => {
                 <h5> Las operaciones se efenctúan de la manera</h5>
                 <p> Unión: A ∪ B</p>
                 <p>Intersección: A ∩ B</p>
-                <p>Diferencia: A - B</p>
+                <p>Diferencia: A - B y B - A</p>
             </div>
 
         </div>

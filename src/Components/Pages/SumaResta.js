@@ -10,12 +10,21 @@ import Control from "../../Control";
 
 const SumaResta = () => {
 
+    /* 
+        Estados necesarios 
+        mat_a --> guarda los valores de la matriz_a
+        mat_b --> guarda los valores de la matriz_b
+        validar --> estado para mostrar el resultado
+    */
     const [mat_a, setMat_a] = useState([]);
     const [mat_b, setMat_b] = useState([]);
     const [validar, setValidar] = useState(false);
 
+    /* 
+        Método para obtener los valores de los formularios.
+        Traé los datos desde el componente Hijo y los guarda en los estados.
+    */
     const get_data = (matriz_a, matriz_b) => {
-        // console.log('In parent Component', matriz_a, matriz_b)
         setMat_a(matriz_a);
         setMat_b(matriz_b);
         setValidar(true);

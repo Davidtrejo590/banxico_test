@@ -23,7 +23,6 @@ const FormPotencia = () => {
 
     /* Método para obtener los valores de las matrices que provienen del componente hijo */
     const get_data = (matriz_a, matriz_b) => {
-        // console.log('In parent Component', matriz_a, matriz_b)
         setMat_a(matriz_a);
         setMat_b(matriz_b);
         setValidar(true);
@@ -41,9 +40,7 @@ const FormPotencia = () => {
                             <p>{`A ^ ${document.getElementById("pot").value}`}</p>
                             {
                                 Control.potencia_matriz(mat_a, document.getElementById("pot").value).map((item, index) => {
-                                    return (
-                                        <div className="mx-2" key={index}><p>{`${item}`}</p></div>
-                                    )
+                                    return <div className="mx-2" key={index}><p>{`${item}`}</p></div>
                                 })
                             }
                         </div>
@@ -51,9 +48,7 @@ const FormPotencia = () => {
                             <p>{`B ^ ${document.getElementById("pot").value}`}</p>
                             {
                                 Control.potencia_matriz(mat_b, document.getElementById("pot").value).map((item, index) => {
-                                    return (
-                                        <div className="mx-2" key={index}><p>{`${item}`}</p></div>
-                                    )
+                                    return <div className="mx-2" key={index}><p>{`${item}`}</p></div>
                                 })
                             }
                         </div>

@@ -10,10 +10,20 @@ import Control from "../../Control";
 
 const MultiplicaDivide = () => {
 
+    /* 
+        Estados necesarios 
+        mat_a --> guarda los valores de la matriz_a
+        mat_b --> guarda los valores de la matriz_b
+        validar --> estado para mostrar el resultado
+    */
     const [mat_a, setMat_a] = useState([]);
     const [mat_b, setMat_b] = useState([]);
     const [validar, setValidar] = useState(false);
 
+    /* 
+        Método para obtener los valores de los formularios.
+        Traé los datos desde el componente Hijo y los guarda en los estados.
+    */
     const get_data = (matriz_a, matriz_b) => {
         setMat_a(matriz_a);
         setMat_b(matriz_b);
@@ -31,9 +41,7 @@ const MultiplicaDivide = () => {
                             <p>A * B</p>
                             {
                                 Control.multiplica_matrices(mat_a, mat_b).map((item, index) => {
-                                    return (
-                                        <div className="mx-2" key={index}><p>{`${item}`}</p></div>
-                                    )
+                                    return <div className="mx-2" key={index}><p>{`${item}`}</p></div>
                                 })
                             }
                         </div>
