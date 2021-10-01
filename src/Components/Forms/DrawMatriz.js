@@ -37,44 +37,42 @@ const DrawMatriz = (props) => {
         if (isNaN(parseInt(filas_a.value)) || isNaN(parseInt(columnas_a.value)) || isNaN(parseInt(filas_b.value)) || isNaN(parseInt(columnas_b.value))) {
             alert("Debes de Ingresar las Dimensiones de cada Matriz");
         } else {
+            switch (props.operacion) {
+                /* Para una suma o resta válida que las dimensiones de cada una sean iguales */
+                case 'SumayResta':
+                    if ((parseInt(filas_a.value) === parseInt(filas_b.value)) && parseInt(columnas_a.value) === parseInt(columnas_b.value)) {
+                        Control.get_values_matriz(filas_a, columnas_a, filas_b, columnas_b, matriz_container_a, matriz_container_b);
+                    } else {
+                        alert("Las dimensiones de A deben ser iguales a las de B");
+                    }
+                    break;
+
+                /* Para una multiplicación valida que las columnas de A sean igual a filas de B */
+                case 'MultiplicayDivide':
+                    if (parseInt(columnas_a.value) !== parseInt(filas_b.value)) {
+                        alert("Las Columnas de A no coinciden con las Filas de B / NxM - MxN");
+                    } else {
+                        Control.get_values_matriz(filas_a, columnas_a, filas_b, columnas_b, matriz_container_a, matriz_container_b);
+                    }
+                    break;
+
+                /* Para la potencia de válida que las matrices sean cuadradas */
+                case 'Potencia':
+                    if ((parseInt(filas_a.value) !== parseInt(columnas_a.value)) || (parseInt(filas_b.value) !== parseInt(columnas_b.value))) {
+                        alert("La matriz debe de ser cuadrada");
+                    } else if ((!document.getElementById("pot").value)) {
+                        alert("El campo de potencia no es  válido");
+                    }
+                    else {
+                        Control.get_values_matriz(filas_a, columnas_a, filas_b, columnas_b, matriz_container_a, matriz_container_b);
+                    }
+                    break;
+
+                default:
+                    break;
+            }
             setListo(true);
         }
-
-        switch (props.operacion) {
-            /* Para una suma o resta válida que las dimensiones de cada una sean iguales */
-            case 'SumayResta':
-                if ((parseInt(filas_a.value) === parseInt(filas_b.value)) && parseInt(columnas_a.value) === parseInt(columnas_b.value)) {
-                    Control.get_values_matriz(filas_a, columnas_a, filas_b, columnas_b, matriz_container_a, matriz_container_b);
-                } else {
-                    alert("Las dimensiones de A deben ser iguales a las de B");
-                }
-                break;
-
-            /* Para una multiplicación valida que las columnas de A sean igual a filas de B */
-            case 'MultiplicayDivide':
-                if (parseInt(columnas_a.value) !== parseInt(filas_b.value)) {
-                    alert("Las Columnas de A no coinciden con las Filas de B / NxM - MxN");
-                } else {
-                    Control.get_values_matriz(filas_a, columnas_a, filas_b, columnas_b, matriz_container_a, matriz_container_b);
-                }
-                break;
-
-            /* Para la potencia de válida que las matrices sean cuadradas */
-            case 'Potencia':
-                if ((parseInt(filas_a.value) !== parseInt(columnas_a.value)) || (parseInt(filas_b.value) !== parseInt(columnas_b.value))) {
-                    alert("La matriz debe de ser cuadrada");
-                } else if ((!document.getElementById("pot").value)) {
-                    alert("El campo de potencia no es  válido");
-                }
-                else {
-                    Control.get_values_matriz(filas_a, columnas_a, filas_b, columnas_b, matriz_container_a, matriz_container_b);
-                }
-                break;
-
-            default:
-                break;
-        }
-
     }
 
     /* 
